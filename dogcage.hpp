@@ -23,15 +23,51 @@
  * THE SOFTWARE.
  *
  ******************************************************************************/
-int _main();
+#pragma once
+
 #include <iostream>
+#include <thread>
+
+int _main();
+namespace dogcage
+{
+	bool dog_is_in_cage = true;
+	int return_value = 0;
+	void Dog()
+	{
+		return_value = _main();
+		dog_is_in_cage = false;
+	}
+}
 int main()
 {
+	std::thread t(dogcage::Dog);
+	t.detach();
 	std::cout << "--------------------------------------Dog ran into the cage!---------------------------------------" << std::endl;
-	int a = _main();
-	std::cout << "--------------------------------------Dog ran out of the cage! Return:"<< a << "--------------------------------------" << std::endl;
-	return a;
+	int used_time = 0;
+	while(dogcage::dog_is_in_cage && used_time <= 5)
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		used_time += 1;
+	}
+	if(dogcage::dog_is_in_cage)
+	{
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+		std::cout << "--------------------------------------Dog has been killed!--------------------------------------" << std::endl;
+	}
+	else
+	{
+		std::cout << "--------------------------------------Dog ran out of the cage!Return " << dogcage::return_value<< "--------------------------------------" << std::endl;
+	}
+	return dogcage::return_value;
 }
+
 #ifndef main
 #define main _main
 #endif
